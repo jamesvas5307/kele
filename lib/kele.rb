@@ -1,7 +1,11 @@
+$LOAD_PATH << '.'
+
 require 'HTTParty'
 require 'json'
+require 'lib/roadmap.rb'
 class Kele
   include HTTParty
+  include Roadmap
   def initialize (email,password)
     @api = "https://www.bloc.io/api/v1/sessions"
 
@@ -19,4 +23,5 @@ class Kele
     availability = self.class.get("https://www.bloc.io/api/v1/mentors/#{mentor_id}/student_availability", headers: { "authorization" => @auth_token })
     @mentor_availabile = JSON.parse(availability.body)
   end
+
 end
