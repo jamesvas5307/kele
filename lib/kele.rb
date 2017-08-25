@@ -1,10 +1,16 @@
 require 'HTTParty'
+require 'json'
 class Kele
   include HTTParty
   def initialize (email,password)
     @api = "https://www.bloc.io/api/v1/sessions"
 
-    @auth_token = self.class.post(@api, query: { email: email, password: password })
+    response = self.class.post(@api, query: { email: email, password: password })
+    @auth_token = response['auth_token']
+  end
 
+  def get_me
+    r = self.class.get('https://www.bloc.io/api/v1/users/me', headers: { "authorization" => @auth_token })
+    @profile = JSON.parse(r.body)
   end
 end
