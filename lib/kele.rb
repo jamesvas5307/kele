@@ -41,4 +41,16 @@ class Kele
     response = self.class.post(url, headers: { "authorization" => @auth_token }, values: {"sender"=> sendersEmail, "recipient_id" => mentor_id, "subject" => subject, "stripped-text" => message})
   end
 
+  def create_submission(checkpoint_id, assignment_branch, assignment_commit_link, comment)
+    url = "https://www.bloc.io/api/v1/checkpoint_submissions"
+    values = {
+      "checkpoint_id" => checkpoint_id,
+      "comment" => comment,
+      "assignment_commit_link" =>  assignment_commit_link,
+      "enrollment_id" => @profile["current_enrollment"]["id"],
+      "assignment_branch" => assignment_branch
+    }
+      response = self.class.post(url, headers: { "authorization" => @auth_token }, values: values)
+  end
+
 end
